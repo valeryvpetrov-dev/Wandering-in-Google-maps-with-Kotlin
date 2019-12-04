@@ -10,10 +10,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import java.util.*
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -46,9 +43,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         val mysFligeli = LatLng(81.858250, 59.112159)
-        val zoomLevel = 10f
+        val zoomLevel = 14f
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mysFligeli, zoomLevel))
         mMap.addMarker(MarkerOptions().position(mysFligeli).title("Mys Fligeli"))
+
+        addOverlay(mMap, mysFligeli, R.drawable.ic_launcher, 100f)
         setOnMapLongClickListener(mMap)
         setOnPoiClickListener(mMap)
         setMapStyle(mMap)
@@ -119,5 +118,12 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         } catch (e: Resources.NotFoundException) {
             Log.e(TAG, e.toString())
         }
+    }
+
+    private fun addOverlay(map: GoogleMap, position: LatLng, overlayResourceId: Int, overlaySize: Float) {
+        val groundOverlay = GroundOverlayOptions()
+            .image(BitmapDescriptorFactory.fromResource(overlayResourceId))
+            .position(position, overlaySize)
+        map.addGroundOverlay(groundOverlay)
     }
 }
