@@ -42,6 +42,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mysFligeli, zoomLevel))
         mMap.addMarker(MarkerOptions().position(mysFligeli).title("Mys Fligeli"))
         setOnMapLongClickListener(mMap)
+        setOnPoiClickListener(mMap)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -83,6 +84,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     .title(getString(R.string.dropped_pin))
                     .snippet(snippet)
             )
+        }
+    }
+
+    private fun setOnPoiClickListener(map: GoogleMap) {
+        map.setOnPoiClickListener { pointOfInterest ->
+            val poiMarker = map.addMarker(
+                MarkerOptions()
+                    .position(pointOfInterest.latLng)
+                    .title(pointOfInterest.name)
+            )
+            poiMarker.showInfoWindow()
         }
     }
 }
